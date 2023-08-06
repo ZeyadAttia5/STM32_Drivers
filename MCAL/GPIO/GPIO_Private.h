@@ -1,3 +1,12 @@
+
+/*******************************************************************/
+/* SWC: GPIO Driver                                                 */
+/* Author: Zeyad Attia                                             */
+/* Version: v0.0                                                   */
+/* Date: 05 Aug 2023                                               */
+/* Description: implemntation of the RCC driver in the STM32F401CC */
+/*******************************************************************/
+
 #ifndef GPIO_PRV_H
 #define GPIO_PRV_H
 
@@ -39,5 +48,21 @@ GPIOC:  0x4002 0800
 #define GPIOA_BSSR *((volatile u8 *)0x4002 0018)
 #define GPIOB_BSSR *((volatile u8 *)0x4002 0418)
 #define GPIOC_BSSR *((volatile u8 *)0x4002 0818)
+
+// Base Address: 0x1C
+#define GPIOA_LCKR *((volatile u8 *)0x4002 001C)
+#define GPIOB_LCKR *((volatile u8 *)0x4002 041C)
+#define GPIOC_LCKR *((volatile u8 *)0x4002 081C)
+
+// Base Address: 0x20
+#define GPIOA_AFRL *((volatile u8 *)0x4002 0020)
+#define GPIOB_AFRL *((volatile u8 *)0x4002 0420)
+#define GPIOC_AFRL *((volatile u8 *)0x4002 0820)
+
+// Base Address: 0x24
+#define GPIOA_AFRH *((volatile u8 *)0x4002 0024)
+#define GPIOB_AFRH *((volatile u8 *)0x4002 0424)
+#define GPIOC_AFRH *((volatile u8 *)0x4002 0824)
+
 
 #endif
