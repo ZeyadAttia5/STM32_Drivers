@@ -40,11 +40,11 @@ void RCC_voidInitSysClk(void)
 
 #if PLL_SRC == HSE
     SET_BIT(RCC_PLLCFGR, PLLSRC);
-    // SET_BIT(RCC_CR, HSEON);
+    SET_BIT(RCC_CR, HSEON);
 
 #elif PLL_SRC == HSI
     CLR_BIT(RCC_PLLCFGR, PLLSRC);
-    // SET_BIT(RCC_CR, HSION);
+    SET_BIT(RCC_CR, HSION);
 #else
 #error "invalid PLL source"
 #endif
