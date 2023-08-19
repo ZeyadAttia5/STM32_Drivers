@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "gpio_interface.h": "c",
+        "rcc_config.h": "c",
+        "gpio_config.h": "c"
+    }
+}

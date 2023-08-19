@@ -1,524 +1,391 @@
+/********************************************/
+/* SWC: GPIO Driver                         */
+/* Author: Seif Hashad                      */
+/* Version: v0.0                            */
+/* Date: 11 AUG 2023                        */
+/* Description: This is the implem. of GPIO */
+/********************************************/
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
 
-
-#include "../../LIB/STD_TYPES.h"
-#include "../../LIB/BIT_MATH.h"
-#include "GPIO_Private.h"
 #include "GPIO_Interface.h"
+#include "GPIO_Private.h"
 #include "GPIO_Config.h"
 
-/*
-    GPIO_voidSetPinMode
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8Mode: Input, Output, AF, Analog
-    o/p arguments: void
-    Description: this API allows the user to set the mode of a specific pin
-*/
-void GPIO_voidSetPinMode(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8Mode)
+/*****************************************************************/
+/* Func. Name: GPIO_voidSetPinMode                               */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                   */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                   */
+/* i/p arguments: Copy_u8Mode: INPUT, OUTPUT, AF, ANALOG         */
+/* o/p arguments: nothing                                        */
+/* Desc. : This API allows user to Set the mode of a specific pin*/
+/*****************************************************************/
+void GPIO_voidSetPinMode(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Mode)
 {
-    /* i/p validation */
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8Mode > ANALOG)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8Mode > ANALOG))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8Mode)
+        switch(Copy_u8Mode)
         {
-        case INPUT:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOB:
-                CLR_BIT(GPIOB.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOB.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOC:
-                CLR_BIT(GPIOC.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOC.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            default:
-                break;
-            }
-            break;
-        case OUTPUT:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOB:
-                CLR_BIT(GPIOB.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOB.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOC:
-                CLR_BIT(GPIOC.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOC.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case AF:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOB:
-                SET_BIT(GPIOB.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOB.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOC:
-                SET_BIT(GPIOC.MODER, (copy_u8PinId * 2));
-                CLR_BIT(GPIOC.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            default:
-                break;
-            }
-            break;
-        case ANALOG:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOB:
-                SET_BIT(GPIOB.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOB.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            case IOC:
-                SET_BIT(GPIOC.MODER, (copy_u8PinId * 2));
-                SET_BIT(GPIOC.MODER, (copy_u8PinId * 2 + 1));
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case INPUT: switch(Copy_u8PortId)
+                        {
+                            case IOA:   CLR_BIT(GPIOA->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOA->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOB:   CLR_BIT(GPIOB->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOB->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOC:   CLR_BIT(GPIOC->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOC->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                        } 
+                        break;
+            case OUTPUT:switch(Copy_u8PortId)
+                        {
+                            case IOA:   SET_BIT(GPIOA->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOA->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOB:   SET_BIT(GPIOB->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOB->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOC:   SET_BIT(GPIOC->MODER, (Copy_u8PinId*2));
+                                        CLR_BIT(GPIOC->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                        } 
+                        break;
+            case AF:    switch(Copy_u8PortId)
+                        {
+                            case IOA:   CLR_BIT(GPIOA->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOA->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOB:   CLR_BIT(GPIOB->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOB->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOC:   CLR_BIT(GPIOC->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOC->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                        } 
+                        break;
+            case ANALOG:switch(Copy_u8PortId)
+                        {
+                            case IOA:   SET_BIT(GPIOA->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOA->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOB:   SET_BIT(GPIOB->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOB->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                            case IOC:   SET_BIT(GPIOC->MODER, (Copy_u8PinId*2));
+                                        SET_BIT(GPIOC->MODER, ((Copy_u8PinId*2)+1));
+                                        break;
+                        } 
+                        break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPinMode
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8Type: Output_Push/Pull, Output_OpenDrain
-    o/p arguments: void
-    Description: this API allows the user to set the type of a specific pin
-*/
-void GPIO_voidSetPinType(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8Type)
+/*****************************************************************/
+/* Func. Name: GPIO_voidSetPinType                               */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                   */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                   */
+/* i/p arguments: Copy_u8Type: OUTPUT_PP, OUTPUT_OD              */
+/* o/p arguments: nothing                                        */
+/* Desc. : This API allows user to Set the type of a specific pin*/
+/*****************************************************************/
+void GPIO_voidSetPinType(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Type)
 {
-
-    /* i/p validation */
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8Type > OUTPUT_OD)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8Type > OUTPUT_OD))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8Type)
+        switch (Copy_u8Type)
         {
-        case OUTPUT_PP:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case OUTPUT_OD:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            case IOB:
-                SET_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            case IOC:
-                SET_BIT(GPIOA.OTYPER, copy_u8PinId);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case OUTPUT_PP: switch(Copy_u8PortId)
+                            {
+                                case IOA:   CLR_BIT(GPIOA->OTYPER, Copy_u8PinId);
+                                            break;
+                                case IOB:   CLR_BIT(GPIOB->OTYPER, Copy_u8PinId);
+                                            break;
+                                case IOC:   CLR_BIT(GPIOC->OTYPER, Copy_u8PinId);
+                                            break;
+                            }
+                            break;
+            case OUTPUT_OD: switch(Copy_u8PortId)
+                            {
+                                case IOA:   SET_BIT(GPIOA->OTYPER, Copy_u8PinId);
+                                            break;
+                                case IOB:   SET_BIT(GPIOB->OTYPER, Copy_u8PinId);
+                                            break;
+                                case IOC:   SET_BIT(GPIOC->OTYPER, Copy_u8PinId);
+                                            break;
+                            }
+                            break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPinMode
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8Speed: Output_LS, Output_MS, Output_HS
-    o/p arguments: void
-    Description: this API allows the user to set the speed of a specific pin
-*/
-void GPIO_voidSetPinSpeed(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8Speed)
+/******************************************************************/
+/* Func. Name: GPIO_voidSetPinSpeed                               */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                    */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                    */
+/* i/p arguments: Copy_u8Speed: OUTPUT_LS, OUTPUT_MS, OUTPUT_HS   */
+/* o/p arguments: nothing                                         */
+/* Desc. : This API allows user to Set the speed of a specific pin*/
+/******************************************************************/
+void GPIO_voidSetPinSpeed(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Speed)
 {
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8Speed > OUTPUT_OD)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8Speed > OUTPUT_HS))
     {
-        // error
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8Speed)
+        switch(Copy_u8Speed)
         {
-        case OUTPUT_LS:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case OUTPUT_MS:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-        case OUTPUT_HS:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.OSPEEDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case OUTPUT_LS: switch(Copy_u8PortId)
+                            {
+                                case IOA:   CLR_BIT(GPIOA->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOA->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOB:   CLR_BIT(GPIOB->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOB->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOC:   CLR_BIT(GPIOC->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOC->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                            } 
+                            break;
+            case OUTPUT_MS: switch(Copy_u8PortId)
+                            {
+                                case IOA:   SET_BIT(GPIOA->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOA->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOB:   SET_BIT(GPIOB->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOB->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOC:   SET_BIT(GPIOC->OSPEEDR, (Copy_u8PinId*2));
+                                            CLR_BIT(GPIOC->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                            } 
+                            break;
+            case OUTPUT_HS: switch(Copy_u8PortId)
+                            {
+                                case IOA:   CLR_BIT(GPIOA->OSPEEDR, (Copy_u8PinId*2));
+                                            SET_BIT(GPIOA->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOB:   CLR_BIT(GPIOB->OSPEEDR, (Copy_u8PinId*2));
+                                            SET_BIT(GPIOB->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                                case IOC:   CLR_BIT(GPIOC->OSPEEDR, (Copy_u8PinId*2));
+                                            SET_BIT(GPIOC->OSPEEDR, ((Copy_u8PinId*2)+1));
+                                            break;
+                            } 
+                            break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPuPdConfig
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8PuPd: INPUT_FLOATING, INPUT_PD, INPUT_PU
-    o/p arguments: void
-    Description: this API allows the user to set the mode of a specific pin
-*/
-void GPIO_voidSetPuPdConfig(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8PuPd)
+/*********************************************************************/
+/* Func. Name: GPIO_voidSetPinPuPdConfig                             */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                       */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                       */
+/* i/p arguments: Copy_u8PUPDType: INPUT_FLOATING, INPUT_PU, INPUT_PD*/
+/* o/p arguments: nothing                                            */
+/* Desc. : This API allows user to Set the value of a specific pin   */
+/*********************************************************************/
+void GPIO_voidSetPinPuPdConfig(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8PUPDType)
 {
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8PuPd > INPUT_PU)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8PUPDType > INPUT_PD))
     {
-        // error
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8PuPd)
+        switch (Copy_u8PUPDType)
         {
-        case INPUT_FLOATING:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case INPUT_PD:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-        case INPUT_PU:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.PUPDR, (copy_u8PinId * 2));
-                SET_BIT(GPIOA.PUPDR, (copy_u8PinId * 2) + 1);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case INPUT_FLOATING: switch(Copy_u8PortId)
+                                 {
+                                     case IOA:   CLR_BIT(GPIOA->PUPDR, (Copy_u8PinId*2));
+                                                 CLR_BIT(GPIOA->PUPDR, ((Copy_u8PinId*2)+1));
+                                                 break;
+                                     case IOB:   CLR_BIT(GPIOB->PUPDR, (Copy_u8PinId*2));
+                                                 CLR_BIT(GPIOB->PUPDR, ((Copy_u8PinId*2)+1));
+                                                 break;
+                                     case IOC:   CLR_BIT(GPIOC->PUPDR, (Copy_u8PinId*2));
+                                                 CLR_BIT(GPIOC->PUPDR, ((Copy_u8PinId*2)+1));
+                                                 break;
+                                 } 
+                                 break;
+            case INPUT_PU:      switch(Copy_u8PortId)
+                                {
+                                    case IOA:   SET_BIT(GPIOA->PUPDR, (Copy_u8PinId*2));
+                                                CLR_BIT(GPIOA->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                    case IOB:   SET_BIT(GPIOB->PUPDR, (Copy_u8PinId*2));
+                                                CLR_BIT(GPIOB->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                    case IOC:   SET_BIT(GPIOC->PUPDR, (Copy_u8PinId*2));
+                                                CLR_BIT(GPIOC->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                } 
+                                break;
+            case INPUT_PD:      switch(Copy_u8PortId)
+                                {
+                                    case IOA:   CLR_BIT(GPIOA->PUPDR, (Copy_u8PinId*2));
+                                                SET_BIT(GPIOA->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                    case IOB:   CLR_BIT(GPIOB->PUPDR, (Copy_u8PinId*2));
+                                                SET_BIT(GPIOB->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                    case IOC:   CLR_BIT(GPIOC->PUPDR, (Copy_u8PinId*2));
+                                                SET_BIT(GPIOC->PUPDR, ((Copy_u8PinId*2)+1));
+                                                break;
+                                } 
+                                break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPinMode
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8SetReset: OUTPUT_SET, OUTPUT_RESET
-    o/p arguments: void
-    Description: this API allows the user to set the mode of a specific pin
-*/
-void GPIO_voidSetDirectAcces(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8SetReset)
+/*****************************************************************/
+/* Func. Name: GPIO_voidSetPinValue                              */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                   */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                   */
+/* i/p arguments: Copy_u8Value: OUTPUT_LOW, OUTPUT_HIGH          */
+/* o/p arguments: nothing                                        */
+/* Desc. : This API allows user to Set the value of a specific pin*/
+/*****************************************************************/
+void GPIO_voidSetPinValue(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Value)
 {
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8SetReset > OUTPUT_RESET)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8Value > OUTPUT_HIGH))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8SetReset)
+        switch (Copy_u8Value)
         {
-        case OUTPUT_SET:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                GPIOA.BSSR = (1 << copy_u8PinId);
-                break;
-            case IOB:
-                GPIOB.BSSR = (1 << copy_u8PinId);
-                break;
-            case IOC:
-                GPIOC.BSSR = (1 << copy_u8PinId);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case OUTPUT_RESET:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                GPIOA.BSSR = (1 << (copy_u8PinId + 16));
-                break;
-            case IOB:
-                GPIOB.BSSR = (1 << (copy_u8PinId + 16));
-                break;
-            case IOC:
-                GPIOC.BSSR = (1 << (copy_u8PinId + 16));
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case OUTPUT_LOW: switch(Copy_u8PortId)
+                            {
+                                case IOA:   CLR_BIT(GPIOA->ODR, Copy_u8PinId);
+                                            break;
+                                case IOB:   CLR_BIT(GPIOB->ODR, Copy_u8PinId);
+                                            break;
+                                case IOC:   CLR_BIT(GPIOC->ODR, Copy_u8PinId);
+                                            break;
+                            }
+                            break;
+            case OUTPUT_HIGH: switch(Copy_u8PortId)
+                            {
+                                case IOA:   SET_BIT(GPIOA->ODR, Copy_u8PinId);
+                                            break;
+                                case IOB:   SET_BIT(GPIOB->ODR, Copy_u8PinId);
+                                            break;
+                                case IOC:   SET_BIT(GPIOC->ODR, Copy_u8PinId);
+                                            break;
+                            }
+                            break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPinMode
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    i/p arguments: copy_u8Value: OUTPUT_HIGH, OUTPUT_LOW
-    o/p arguments: void
-    Description: this API allows the user to set the value of a specific pin
-*/
-void GPIO_voidSetPinValue(u8 copy_u8portId, u8 copy_u8PinId, u8 copy_u8Value)
+/*****************************************************************/
+/* Func. Name: GPIO_voidSetPinValueDirectAccess                  */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                   */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                   */
+/* i/p arguments: Copy_u8SetRstType: OUTPUT_RST, OUTPUT_SET      */
+/* o/p arguments: nothing                                        */
+/* Desc. : This API allows user to Set the value of a specific pin*/
+/*****************************************************************/
+void GPIO_voidSetPinValueDirectAccess(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8SetRstType)
 {
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15 || copy_u8Value > OUTPUT_OD)
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15) || (Copy_u8SetRstType > OUTPUT_SET))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        switch (copy_u8Value)
+        switch (Copy_u8SetRstType)
         {
-        case OUTPUT_PP:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                CLR_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            case IOB:
-                CLR_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            case IOC:
-                CLR_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case OUTPUT_OD:
-            switch (copy_u8portId)
-            {
-            case IOA:
-                SET_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            case IOB:
-                SET_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            case IOC:
-                SET_BIT(GPIOA.ODR, copy_u8PinId);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
+            case OUTPUT_RST: switch(Copy_u8PortId)
+                            {
+                                case IOA:   GPIOA->BSRR = (1 << (Copy_u8PinId+16));
+                                            break;
+                                case IOB:   GPIOB->BSRR = (1 << (Copy_u8PinId+16));
+                                            break;
+                                case IOC:   GPIOC->BSRR = (1 << (Copy_u8PinId+16));
+                                            break;
+                            }
+                            break;
+            case OUTPUT_SET: switch(Copy_u8PortId)
+                            {
+                                case IOA:   GPIOA->BSRR = (1 << Copy_u8PinId);
+                                            break;
+                                case IOB:   GPIOB->BSRR = (1 << Copy_u8PinId);
+                                            break;
+                                case IOC:   GPIOC->BSRR = (1 << Copy_u8PinId);
+                                            break;
+                            }
+                            break;
         }
     }
 }
 
-/*
-    GPIO_voidSetPortValue
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u32: 0-2^32
-    o/p arguments: void
-    Description: this API allows the user to set the value of a specific port
-*/
-void GPIO_voidSetPortValue(u8 copy_u8portId, u32 copy_u32Value)
+void GPIO_voidSetPortValue(u8 Copy_u8PortId, u32 Copy_u32Value)
 {
-    if (copy_u8portId > IOC)
+    if((Copy_u8PortId > IOC))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-
-        switch (copy_u8portId)
+        switch(Copy_u8PortId)
         {
-        case IOA:
-            ASSIGN_REG(GPIOA.ODR, copy_u32Value);
-            break;
-
-        case IOB:
-            ASSIGN_REG(GPIOB.ODR, copy_u32Value);
-            break;
-            break;
-        case IOC:
-            ASSIGN_REG(GPIOC.ODR, copy_u32Value);
-            break;
-        default:
-            break;
+            case IOA:   GPIOA->ODR = Copy_u32Value;
+                        break;
+            case IOB:   GPIOB->ODR = Copy_u32Value;
+                        break;
+            case IOC:   GPIOC->ODR = Copy_u32Value;
+                        break;
         }
     }
 }
 
-/*
-    GPIO_voidGetPinValue
-    i/p arguments: copy_u8portId: IOA, IOB, IOC
-    i/p arguments: copy_u8PinId: 0-15
-    o/p arguments: u8
-    Description: this API allows the user to get the value of a specific pin
-*/
-u8 GPIO_voidGetPinValue(u8 copy_u8portId, u8 copy_u8PinId)
+/*****************************************************************/
+/* Func. Name: GPIO_u8GetPinValue                                */
+/* i/p arguments: Copy_u8PortId: IOA, IOB, IOC                   */
+/* i/p arguments: Copy_u8PinId: PIN0 --> PIN15                   */
+/* o/p arguments: u8                                             */
+/* Desc. : This API allows user to get the value of a specific pin*/
+/*****************************************************************/
+u8   GPIO_u8GetPinValue(u8 Copy_u8PortId, u8 Copy_u8PinId)
 {
-    if (copy_u8portId > IOC || copy_u8PinId > PIN15)
+    u8 Local_u8PinValue;
+    /*i/p Validation*/
+    if((Copy_u8PortId > IOC) || (Copy_u8PinId > PIN15))
     {
-        /* return error */
-        return;
+        /*Do Nothing*/
     }
     else
     {
-        u8 local_u8PinValue;
-        switch (copy_u8portId)
+        switch(Copy_u8PortId)
         {
-        case IOA:
-            local_u8PinValue = GET_BIT(GPIOA.IDR, copy_u8PinId);
-            break;
-
-        case IOB:
-            local_u8PinValue = GET_BIT(GPIOA.IDR, copy_u8PinId);
-            break;
-        case IOC:
-            local_u8PinValue = GET_BIT(GPIOA.IDR, copy_u8PinId);
-            break;
-        default:
-            break;
+            case IOA:   Local_u8PinValue = GET_BIT(GPIOA->IDR, Copy_u8PinId);
+                        break;
+            case IOB:   Local_u8PinValue = GET_BIT(GPIOB->IDR, Copy_u8PinId);
+                        break;
+            case IOC:   Local_u8PinValue = GET_BIT(GPIOC->IDR, Copy_u8PinId);
+                        break;
         }
-        return local_u8PinValue;
     }
+    return Local_u8PinValue;
 }

@@ -62,6 +62,9 @@ enum
 #define OUTPUT_SET      0
 #define OUTPUT_RESET    1
 
+#define OUTPUT_LOW  0
+#define OUTPUT_HIGH 1
+
 #define INPUT_FLOATING  0
 #define INPUT_PD        1
 #define INPUT_PU        2
