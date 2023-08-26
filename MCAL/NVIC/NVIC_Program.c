@@ -6,7 +6,6 @@
 #include "NVIC_Private.h"
 #include "NVIC_Config.h"
 
-
 static u8 Global_u8PriorityConfig = 245;
 /*
     NVIC_voidEnablePerInt
@@ -14,14 +13,14 @@ static u8 Global_u8PriorityConfig = 245;
     o/p arguments: void
     Description: this API allows the user to enable a peripheral's interrupt
 */
-u8 NVIC_voidEnablePerInt(u8 copy_u8PerID)
+u8 NVIC_u8EnablePerInt(u8 copy_u8PerID)
 {
     u8 loc_u8Error = SUCCESS;
     if (copy_u8PerID < 85)
     {
         u8 loc_u8PerID = copy_u8PerID / 32;
         u8 loc_u8BitNo = copy_u8PerID % 32;
-        SET_BIT(NVIC->ISER[loc_u8BitNo], loc_u8BitNo);
+        SET_BIT(NVIC->ISER[loc_u8PerID], loc_u8BitNo);
     }
     else
     {
@@ -37,14 +36,14 @@ u8 NVIC_voidEnablePerInt(u8 copy_u8PerID)
     o/p arguments: void
     Description: this API allows the user to disable a peripheral's interrupt
 */
-u8 NVIC_voidDisablePerInt(u8 copy_u8PerID)
+u8 NVIC_u8DisablePerInt(u8 copy_u8PerID)
 {
     u8 loc_u8Error = SUCCESS;
     if (copy_u8PerID < 85)
     {
         u8 loc_u8PerID = copy_u8PerID / 32;
         u8 loc_u8BitNo = copy_u8PerID % 32;
-        CLR_BIT(NVIC->ISER[loc_u8BitNo], loc_u8BitNo);
+        CLR_BIT(NVIC->ISER[loc_u8PerID], loc_u8BitNo);
     }
     else
     {
@@ -89,8 +88,24 @@ void NVIC_voidSetPriorityConfig(u8 copy_u8PriortyConfig)
     }
 }
 
-void NVIC_voidSetPendingFlag(u8 copy_u8PerID);
-void NVIC_voidClrPendingFlag(u8 copy_u8PerID);
+/*
+    NVIC_voidSetPendingFlag
+    i/p arguments: copy_u8PerID (0 - 84)
+    o/p arguments: void
+    Description: this API allows the user to enable a peripheral's pending flag
+*/
+void NVIC_voidSetPendingFlag(u8 copy_u8PerID)
+{
+    u8 local_u8GroupID = copy_u8PerID / 32;
+    u8 local_u8BitNo = copy_u8PerID % 32;
+    SET_BIT(NVIC->ISPR[local_u8GroupID], local_u8BitNo);
+}
+void NVIC_voidClrPendingFlag(u8 copy_u8PerID)
+{
+    u8 local_u8GroupID = copy_u8PerID / 32;
+    u8 local_u8BitNo = copy_u8PerID % 32;
+    SET_BIT(NVIC->ICPR[local_u8GroupID], local_u8BitNo);
+}
 
 /*
     NVIC_voidSetPerPriority
@@ -100,7 +115,8 @@ void NVIC_voidClrPendingFlag(u8 copy_u8PerID);
     o/p arguments: void
     Description: this API allows the user to set the priority of a peripheral's interrupt
 */
-void NVIC_voidSetPerPriority(u8 copy_u8PerId, u8 copy_u8GroupId, u8 copy_u8SubGrouPId){
+void NVIC_voidSetPerPriority(u8 copy_u8PerId, u8 copy_u8GroupId, u8 copy_u8SubGrouPId)
+{
     u8 Local_u8LocalPriority = copy_u8SubGrouPId | copy_u8GroupId << (Global_u8PriorityConfig - 3);
     ASSIGN_REG(NVIC->IPR[copy_u8PerId], (Local_u8LocalPriority << 4));
 }
