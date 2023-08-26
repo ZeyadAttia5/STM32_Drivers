@@ -1,6 +1,6 @@
 
-#include "../../LIB/BIT_MATH.h"
-#include "../../LIB/STD_TYPES.h"
+#include "BIT_MATH.h"
+#include "STD_TYPES.h"
 
 #include "NVIC_Interface.h"
 #include "NVIC_Private.h"
