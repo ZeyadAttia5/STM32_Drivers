@@ -9,7 +9,7 @@
 #ifndef STK_INTERFACE_H
 #define STK_INTERFACE_H
 
-#include "STD_TYPES.h"
+#include "LIB/STD_TYPES.h"
 
 void STK_voidInit(void);
 void STK_voidSetBusyWait(u32 Copy_u32Ticks);

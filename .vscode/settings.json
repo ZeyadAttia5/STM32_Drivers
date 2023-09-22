@@ -4,6 +4,7 @@
         "rcc_config.h": "c",
         "gpio_config.h": "c",
         "std_types.h": "c",
-        "bit_math.h": "c"
+        "bit_math.h": "c",
+        "stk_config.h": "c"
     }
 }

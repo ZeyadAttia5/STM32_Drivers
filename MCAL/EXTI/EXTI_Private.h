@@ -4,7 +4,7 @@
 // EXTI Base address: 0x40013C00
 #define Base_address 0x40013C00
 
-#include "STD_TYPES.h"
+#include "LIB/STD_TYPES.h"
 
 // #define EXTI_IMR     *((volatile u32 *)(Base_address + 0x00))
 // #define EXTI_EMR     *((volatile u32 *)(Base_address + 0x04))
@@ -40,8 +40,6 @@ typedef struct EXTI_Private
 #define private_EXTI14 14
 #define private_EXTI15 15
 
-#define EXTI5_9     23
-#define EXTI10_15   40
 
 #define EXTI ((volatile EXTI_t *)(Base_address))
 
